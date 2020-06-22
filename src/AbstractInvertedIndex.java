@@ -1,12 +1,14 @@
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 public abstract class AbstractInvertedIndex {
     // Fields
     HashMap<String, TreeSet<String>> map;
+
+    // Constants
+    //private static final String[] tags = {"<DOC>", };  // TODO finish the array
 
     public AbstractInvertedIndex() {
         map = new HashMap<>();
@@ -18,8 +20,9 @@ public abstract class AbstractInvertedIndex {
         for (File file : files) {
             List<String> lines = readLines(file);
             String fileName = file.getName();
-            for (String line : lines)
-                addLineToMap(fileName, line);
+            for (String line : lines)  // TODO Check for tag files, and ignore them
+                if (!isTagLine(line))
+                    addLineToMap(fileName, line);
 
         }
     }
@@ -38,5 +41,9 @@ public abstract class AbstractInvertedIndex {
             map.put(word, valuesFiles);
         }
         map.get(word).add(fileName);
+    }
+
+    protected boolean isTagLine(String line) {  // TODO Add checks
+        return false;
     }
 }
