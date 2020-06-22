@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.TreeSet;
 
 public abstract class AbstractInvertedIndex {
@@ -9,6 +10,9 @@ public abstract class AbstractInvertedIndex {
 
     // Constants
     //private static final String[] tags = {"<DOC>", };  // TODO finish the array
+    private static final String QUERY_AND = "and";
+    private static final String QUERY_OR = "or";
+    private static final String QUERY_NOT = "not";
 
     public AbstractInvertedIndex() {
         map = new HashMap<>();
@@ -24,6 +28,29 @@ public abstract class AbstractInvertedIndex {
                 if (!isTagLine(line))
                     addLineToMap(fileName, line);
 
+        }
+    }
+
+    public TreeSet<String> runQuery(String query) {
+        String[] words = Utils.splitBySpace(query);
+        Stack<TreeSet<String>> stack = new Stack<>();
+        for (String word : words) {
+            TreeSet<String> treeSetToStack;
+            switch (word.toLowerCase()) {
+                case QUERY_AND:
+                    treeSetToStack = queryAnd(stack);
+                    break;
+                case QUERY_OR:
+                    treeSetToStack = queryOr(stack);
+                    break;
+                case QUERY_NOT:
+                    treeSetToStack = queryNot(stack);
+                    break;
+                default:
+                    treeSetToStack = queryWord(word);
+                    break;
+            }
+            stack.push(treeSetToStack);
         }
     }
 
@@ -45,5 +72,33 @@ public abstract class AbstractInvertedIndex {
 
     protected boolean isTagLine(String line) {  // TODO Add checks
         return false;
+    }
+
+    private TreeSet<String> queryAnd(Stack<TreeSet<String>> stack) {
+        TreeSet<String> firstTreeSet = stack.pop();
+        TreeSet<String> secondTreeSet = stack.pop();
+        TreeSet<String> returnTree = new TreeSet<>(firstTreeSet);
+        returnTree.retainAll(secondTreeSet);
+        return returnTree;
+    }
+
+    private TreeSet<String> queryOr(Stack<TreeSet<String>> stack) {
+        TreeSet<String> firstTreeSet = stack.pop();
+        TreeSet<String> secondTreeSet = stack.pop();
+        TreeSet<String> returnTree = new TreeSet<>(firstTreeSet);
+        returnTree.addAll(secondTreeSet);
+        return returnTree;
+    }
+
+    private TreeSet<String> queryNot(Stack<TreeSet<String>> stack) {
+        TreeSet<String> firstTreeSet = stack.pop();
+        TreeSet<String> secondTreeSet = stack.pop();
+        TreeSet<String> returnTree = new TreeSet<>(firstTreeSet);
+        returnTree.removeAll(secondTreeSet);
+        return returnTree;
+    }
+
+    private TreeSet<String> queryWord(String word) {
+        return new TreeSet<>(map.get(word));
     }
 }
