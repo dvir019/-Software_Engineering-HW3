@@ -14,7 +14,7 @@ public abstract class AbstractInvertedIndex {
     private static final String QUERY_OR = "or";
     private static final String QUERY_NOT = "not";
 
-    public AbstractInvertedIndex() {
+    protected AbstractInvertedIndex() {
         map = new HashMap<>();
     }
 
