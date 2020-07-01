@@ -21,7 +21,7 @@ public class CaseInsensitiveInvertedIndex extends AbstractInvertedIndex {
         List<String> fileLines = Utils.readLines(file);
         List<String> lowercaseFileLines = new ArrayList<>();
         for (String line : fileLines) {
-            if (!isTagLine(line)) {
+            if (!isTagLineOrEmpty(line)) {
                 lowercaseFileLines.add(line.toLowerCase());
             }
         }

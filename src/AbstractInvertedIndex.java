@@ -1,15 +1,12 @@
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class AbstractInvertedIndex {
     // Fields
     HashMap<String, TreeSet<String>> map;
 
     // Constants
-    //private static final String[] tags = {"<DOC>", };  // TODO finish the array
+    private static final List<String> tags = Arrays.asList("<DOC>", "<DOCNO>", "<TEXT>", "</TEXT>", "</DOC>");
     private static final String QUERY_AND = "and";
     private static final String QUERY_OR = "or";
     private static final String QUERY_NOT = "not";
@@ -25,7 +22,7 @@ public abstract class AbstractInvertedIndex {
             List<String> lines = readLines(file);
             String fileName = file.getName();
             for (String line : lines)  // TODO Check for tag files, and ignore them
-                if (!isTagLine(line))
+                if (!isTagLineOrEmpty(line))
                     addLineToMap(fileName, line);
 
         }
@@ -71,8 +68,12 @@ public abstract class AbstractInvertedIndex {
         map.get(word).add(fileName);
     }
 
-    protected boolean isTagLine(String line) {  // TODO Add checks
-        return line.startsWith("<");
+    protected boolean isTagLineOrEmpty(String line) {  // TODO Add checks
+        String[] words = Utils.splitBySpace(line);
+        if (words.length == 0)
+            return true;
+        String firstWord = words[0];
+        return tags.contains(firstWord);
     }
 
     private TreeSet<String> queryAnd(Stack<TreeSet<String>> stack) {
