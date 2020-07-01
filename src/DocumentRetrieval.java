@@ -1,6 +1,4 @@
 import java.io.File;
-import java.util.List;
-import java.util.TreeSet;
 
 /**
  * The main user class.

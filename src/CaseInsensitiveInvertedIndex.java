@@ -1,13 +1,21 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CaseInsensitiveInvertedIndex extends AbstractInvertedIndex {
 
-    private static CaseInsensitiveInvertedIndex instance = null;
+    // Static fields
+    private static CaseInsensitiveInvertedIndex instance = null;  // Instance object for the singleton
 
-    public static AbstractInvertedIndex getInstance(){
-        if (instance == null){
+
+    // Static methods
+    /**
+     * Gets the instance object
+     * <p>
+     * If the object had not been created yet, the method creates it, and prints a message about the creation.
+     * If the object had been created, a message will be printed as well.
+     *
+     * @return The instance object
+     */
+    public static AbstractInvertedIndex getInstance() {
+        if (instance == null) {
             instance = new CaseInsensitiveInvertedIndex();
             System.out.println("New CaseInsensitive index is created");
         } else {
@@ -17,6 +25,7 @@ public class CaseInsensitiveInvertedIndex extends AbstractInvertedIndex {
     }
 
 
+    // Methods
     @Override
     protected String getFormattedString(String str) {
         if (str.equals(QUERY_AND) || str.equals(QUERY_OR) || str.equals(QUERY_NOT))
