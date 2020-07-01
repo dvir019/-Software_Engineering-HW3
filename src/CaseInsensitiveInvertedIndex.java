@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CaseInsensitiveInvertedIndex extends AbstractInvertedIndex {
 
-    static CaseInsensitiveInvertedIndex instance = null;
+    private static CaseInsensitiveInvertedIndex instance = null;
 
     public CaseInsensitiveInvertedIndex getInstance(){
         if (instance == null){
