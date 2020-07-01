@@ -27,4 +27,11 @@ public class CaseInsensitiveInvertedIndex extends AbstractInvertedIndex {
         }
         return lowercaseFileLines;
     }
+
+    @Override
+    protected String getFormattedString(String str) {
+        if (str.equals(QUERY_AND) || str.equals(QUERY_OR) || str.equals(QUERY_NOT))
+            return str;
+        return str.toLowerCase();
+    }
 }

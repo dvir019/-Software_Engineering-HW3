@@ -27,4 +27,9 @@ public class CaseSensitiveInvertedIndex extends AbstractInvertedIndex {
         }
         return lowercaseFileLines;
     }
+
+    @Override
+    protected String getFormattedString(String str) {
+        return str;
+    }
 }

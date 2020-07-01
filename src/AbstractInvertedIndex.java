@@ -7,9 +7,9 @@ public abstract class AbstractInvertedIndex {
 
     // Constants
     private static final List<String> tags = Arrays.asList("<DOC>", "<DOCNO>", "<TEXT>", "</TEXT>", "</DOC>");
-    private static final String QUERY_AND = "and";
-    private static final String QUERY_OR = "or";
-    private static final String QUERY_NOT = "not";
+    protected static final String QUERY_AND = "AND";
+    protected static final String QUERY_OR = "OR";
+    protected static final String QUERY_NOT = "NOT";
 
     protected AbstractInvertedIndex() {
         map = new HashMap<>();
@@ -33,7 +33,8 @@ public abstract class AbstractInvertedIndex {
         Stack<TreeSet<String>> stack = new Stack<>();
         for (String word : words) {
             TreeSet<String> treeSetToStack;
-            switch (word.toLowerCase()) {
+            String formattedWord = getFormattedString(word);
+            switch (formattedWord) {
                 case QUERY_AND:
                     treeSetToStack = queryAnd(stack);
                     break;
@@ -44,7 +45,7 @@ public abstract class AbstractInvertedIndex {
                     treeSetToStack = queryNot(stack);
                     break;
                 default:
-                    treeSetToStack = queryWord(word);
+                    treeSetToStack = queryWord(formattedWord);
                     break;
             }
             stack.push(treeSetToStack);
@@ -53,6 +54,7 @@ public abstract class AbstractInvertedIndex {
     }
 
     protected abstract List<String> readLines(File file);
+    protected abstract String getFormattedString(String str);
 
     private void addLineToMap(String fileName, String line) {
         String[] words = Utils.splitBySpace(line);
@@ -100,9 +102,10 @@ public abstract class AbstractInvertedIndex {
         return returnTree;
     }
 
-    private TreeSet<String> queryWord(String word) {
-        TreeSet<String> t = map.get(this instanceof CaseSensitiveInvertedIndex ? word : word.toLowerCase());
-        //System.out.println(""+ word + " " + (t == null));
+    private TreeSet<String> queryWord(String formattedWord) {
+        TreeSet<String> t = map.get(formattedWord);
+        if (t==null)
+            System.out.println("Got null: " + formattedWord);
         return new TreeSet<>(t);
     }
 }
