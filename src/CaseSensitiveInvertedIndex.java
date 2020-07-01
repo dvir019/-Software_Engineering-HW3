@@ -6,8 +6,8 @@ public class CaseSensitiveInvertedIndex extends AbstractInvertedIndex {
 
     private static CaseSensitiveInvertedIndex instance = null;
 
-    public CaseSensitiveInvertedIndex getInstance(){
-        if (instance == null){
+    public static AbstractInvertedIndex getInstance() {
+        if (instance == null) {
             instance = new CaseSensitiveInvertedIndex();
             System.out.println("New CaseSensitive index is created");
         } else {
