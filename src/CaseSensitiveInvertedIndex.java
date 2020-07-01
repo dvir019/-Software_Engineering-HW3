@@ -9,7 +9,7 @@ public class CaseSensitiveInvertedIndex extends AbstractInvertedIndex {
         List<String> lowercaseFileLines = new ArrayList<>();
         for (String line : fileLines) {
             if (!isTagLine(line)) {
-                lowercaseFileLines.add(line.toLowerCase());
+                lowercaseFileLines.add(line);
             }
         }
         return lowercaseFileLines;

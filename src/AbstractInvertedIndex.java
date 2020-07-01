@@ -52,6 +52,7 @@ public abstract class AbstractInvertedIndex {
             }
             stack.push(treeSetToStack);
         }
+        return stack.pop();  // TODO check if the queries are legal
     }
 
     protected abstract List<String> readLines(File file);
@@ -71,7 +72,7 @@ public abstract class AbstractInvertedIndex {
     }
 
     protected boolean isTagLine(String line) {  // TODO Add checks
-        return false;
+        return line.startsWith("<");
     }
 
     private TreeSet<String> queryAnd(Stack<TreeSet<String>> stack) {
@@ -93,12 +94,14 @@ public abstract class AbstractInvertedIndex {
     private TreeSet<String> queryNot(Stack<TreeSet<String>> stack) {
         TreeSet<String> firstTreeSet = stack.pop();
         TreeSet<String> secondTreeSet = stack.pop();
-        TreeSet<String> returnTree = new TreeSet<>(firstTreeSet);
-        returnTree.removeAll(secondTreeSet);
+        TreeSet<String> returnTree = new TreeSet<>(secondTreeSet);
+        returnTree.removeAll(firstTreeSet);
         return returnTree;
     }
 
     private TreeSet<String> queryWord(String word) {
-        return new TreeSet<>(map.get(word));
+        TreeSet<String> t = map.get(this instanceof CaseSensitiveInvertedIndex ? word : word.toLowerCase());
+        //System.out.println(""+ word + " " + (t == null));
+        return new TreeSet<>(t);
     }
 }
