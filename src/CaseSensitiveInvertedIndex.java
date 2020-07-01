@@ -1,4 +1,4 @@
-
+/** Singleton class which represents a non-case insensitive inverted index */
 public class CaseSensitiveInvertedIndex extends AbstractInvertedIndex {
 
     // Static fields

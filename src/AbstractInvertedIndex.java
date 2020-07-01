@@ -1,6 +1,12 @@
 import java.io.File;
 import java.util.*;
 
+/**
+ * Represents an inverted index
+ * <p>
+ * Each type of inverted index extends this class, and implements the getFormattedString method,
+ * according to the required formatting.
+ */
 public abstract class AbstractInvertedIndex {
     // Fields
     HashMap<String, TreeSet<String>> map;
