@@ -53,8 +53,18 @@ public abstract class AbstractInvertedIndex {
         return stack.pop();  // TODO check if the queries are legal
     }
 
-    protected abstract List<String> readLines(File file);
     protected abstract String getFormattedString(String str);
+
+    private List<String> readLines(File file) {  // TODO maybe move to AbstractInvertedIndex, and add isLowercase boolean parameter
+        List<String> fileLines = Utils.readLines(file);
+        List<String> lowercaseFileLines = new ArrayList<>();
+        for (String line : fileLines) {
+            if (!isTagLineOrEmpty(line)) {
+                lowercaseFileLines.add(getFormattedString(line));
+            }
+        }
+        return lowercaseFileLines;
+    }
 
     private void addLineToMap(String fileName, String line) {
         String[] words = Utils.splitBySpace(line);
