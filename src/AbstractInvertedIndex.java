@@ -11,17 +11,17 @@ public abstract class AbstractInvertedIndex {
     protected static final String QUERY_OR = "OR";
     protected static final String QUERY_NOT = "NOT";
 
+    // Abstract Methods
     protected AbstractInvertedIndex() {
         map = new HashMap<>();
     }
-
 
     // Methods
     public void buildInvertedIndex(File[] files) {
         for (File file : files) {
             List<String> lines = readLines(file);
             String fileName = file.getName();
-            for (String line : lines)  // TODO Check for tag files, and ignore them
+            for (String line : lines)
                 if (!isTagLineOrEmpty(line))
                     addLineToMap(fileName, line);
 
@@ -50,12 +50,12 @@ public abstract class AbstractInvertedIndex {
             }
             stack.push(treeSetToStack);
         }
-        return stack.pop();  // TODO check if the queries are legal
+        return stack.pop();
     }
 
     protected abstract String getFormattedString(String str);
 
-    private List<String> readLines(File file) {  // TODO maybe move to AbstractInvertedIndex, and add isLowercase boolean parameter
+    private List<String> readLines(File file) {
         List<String> fileLines = Utils.readLines(file);
         List<String> lowercaseFileLines = new ArrayList<>();
         for (String line : fileLines) {
@@ -80,7 +80,7 @@ public abstract class AbstractInvertedIndex {
         map.get(word).add(fileName);
     }
 
-    protected boolean isTagLineOrEmpty(String line) {  // TODO Add checks
+    protected boolean isTagLineOrEmpty(String line) {
         String[] words = Utils.splitBySpace(line);
         if (words.length == 0)
             return true;
